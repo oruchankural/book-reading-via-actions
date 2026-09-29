@@ -1,0 +1,28 @@
+{
+  "name": "folio-api",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Standalone Express API for the Folio reading app. Deploy separately from the client.",
+  "scripts": {
+    "dev": "tsx watch --env-file-if-exists=.env index.ts",
+    "start": "tsx --env-file-if-exists=.env index.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "google-auth-library": "^11.1.0",
+    "jose": "^6.2.12",
+    "tsx": "^4.23.15",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.13.3",
+    "typescript": "~6.0.2"
+  }
+}

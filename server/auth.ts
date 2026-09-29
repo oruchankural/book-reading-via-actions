@@ -19,7 +19,10 @@ async function startSession(res: Response, user: User): Promise<void> {
     .sign(config.jwtSecret)
   res.cookie(COOKIE, token, {
     httpOnly: true,
-    sameSite: 'lax',
+    // The client is a separate origin in production, so the cookie must be
+    // sent on cross-site requests — SameSite=None, which browsers only
+    // honor when Secure is also set (i.e. real HTTPS in prod).
+    sameSite: config.isProd ? 'none' : 'lax',
     secure: config.isProd,
     maxAge: MAX_AGE_MS,
   })
@@ -107,6 +110,8 @@ authRouter.post('/dev', async (_req, res) => {
 })
 
 authRouter.post('/logout', (_req, res) => {
-  res.clearCookie(COOKIE)
+  // clearCookie must be called with the same attributes the cookie was set
+  // with, or some browsers won't match it and it never actually clears.
+  res.clearCookie(COOKIE, { sameSite: config.isProd ? 'none' : 'lax', secure: config.isProd })
   res.status(204).end()
 })
